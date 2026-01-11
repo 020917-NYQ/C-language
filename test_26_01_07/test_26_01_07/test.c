@@ -1,6 +1,9 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS 1
 #include <stdio.h>
 #include <windows.h>
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
 ////if语句
 //int main()
 //{
@@ -553,3 +556,97 @@
 //}
 
 
+////编写代码模拟登录
+////要求只能登录三次，允许三次输入密码，正确则登陆成功，全部错误则退出程序
+//int main()
+//{
+//	int i = 0, flag = 0;
+//	char password[20] = { 0 };
+//	for (int i = 0; i < 3; i++)
+//	{
+//		printf("请输入密码：");
+//		scanf("%s", password); //数组名本质上地址，因此不用再次取地址
+//
+//		//使用strcmp()函数比较两个字符串是否相同，如果相同会返回0
+//		//假设正确密码是123456
+//		if (strcmp(password, "123456") == 0)
+//		{
+//			printf("密码正确\n");
+//			flag = 1;
+//			break;
+//		}
+//		else if((strcmp(password, "123456") != 0) && (i < 2))
+//			printf("密码错误，请重新输入，还剩%d次机会\n", 3 - (i + 1));
+//	}
+//
+//	if (flag == 0)
+//		printf("三次密码均错误，退出程序\n");
+//	return 0;
+//}
+
+
+//猜数字游戏
+//电脑生成1 ~ 100之间的随机数，之后猜数字
+//猜大了会提示猜大了，猜小了会提示猜小了，猜中了会恭喜
+void menu()
+{
+	printf("*****************************\n");
+	printf("********** 1. play **********\n");
+	printf("********** 0. exit **********\n");
+	printf("*****************************\n");
+}
+
+void game()
+{
+	//生成随机数
+	int ret = (rand() % 100) + 1; //用于生成随机数的函数，使用需要包含头文件<stdlib.h>
+	//rand()函数的返回值是一个随机整数，范围是0 ~ RAND-MAX（0 ~ 32767）
+	//使用该函数时，需要使用srand()函数设置随机数生成器，srand()的参数改变，随机数就会改变
+	//想要srand()函数的参数一直改变，可以使用时间戳，因为时间戳是一直在变化的
+	//获得时间戳可以使用time()函数，返回值是时间戳，使用需要包含头文件<time.h>
+	//要获得1 ~ 100的随机数，可以将rand()的返回值模100再加1
+
+	//猜数字
+	int num = 0, count = 0;
+	while (1)
+	{
+		printf("请猜数字：");
+		scanf("%d", &num);
+		count++;
+		if (num > ret)
+			printf("猜大了，再试一次吧！\n");
+		else if (num < ret)
+			printf("猜小了，不要气馁哦！\n");
+		else
+		{
+			printf("你好厉害呀！%d次就猜中了呢！\n", count);
+			break;
+		}
+	}
+}
+
+int main()
+{
+	int input = 0;
+	srand((unsigned int)time(NULL)); //随机数生成器，设置一次即可
+	do 
+	{
+		menu(); //游戏界面s
+		printf("请选择：");
+		scanf("%d", &input);
+
+		switch (input)
+		{
+		case 1:
+			game(); //游戏
+			break;
+		case 0:
+			printf("退出游戏\n");
+			break;
+		default:
+			printf("选择错误，请重新输入\n");
+			break;
+		}
+	} while (input);
+	return 0;
+}
