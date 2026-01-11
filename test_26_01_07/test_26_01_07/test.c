@@ -585,68 +585,129 @@
 //}
 
 
-//猜数字游戏
-//电脑生成1 ~ 100之间的随机数，之后猜数字
-//猜大了会提示猜大了，猜小了会提示猜小了，猜中了会恭喜
-void menu()
-{
-	printf("*****************************\n");
-	printf("********** 1. play **********\n");
-	printf("********** 0. exit **********\n");
-	printf("*****************************\n");
-}
+////猜数字游戏
+////电脑生成1 ~ 100之间的随机数，之后猜数字
+////猜大了会提示猜大了，猜小了会提示猜小了，猜中了会恭喜
+//void menu()
+//{
+//	printf("*****************************\n");
+//	printf("********** 1. play **********\n");
+//	printf("********** 0. exit **********\n");
+//	printf("*****************************\n");
+//}
+//
+//void game()
+//{
+//	//生成随机数
+//	int ret = (rand() % 100) + 1; //用于生成随机数的函数，使用需要包含头文件<stdlib.h>
+//	//rand()函数的返回值是一个随机整数，范围是0 ~ RAND-MAX（0 ~ 32767）
+//	//使用该函数时，需要使用srand()函数设置随机数生成器，srand()的参数改变，随机数就会改变
+//	//想要srand()函数的参数一直改变，可以使用时间戳，因为时间戳是一直在变化的
+//	//获得时间戳可以使用time()函数，返回值是时间戳，使用需要包含头文件<time.h>
+//	//要获得1 ~ 100的随机数，可以将rand()的返回值模100再加1
+//
+//	//猜数字
+//	int num = 0, count = 0;
+//	while (1)
+//	{
+//		printf("请猜数字：");
+//		scanf("%d", &num);
+//		count++;
+//		if (num > ret)
+//			printf("猜大了，再试一次吧！\n");
+//		else if (num < ret)
+//			printf("猜小了，不要气馁哦！\n");
+//		else
+//		{
+//			printf("你好厉害呀！%d次就猜中了呢！\n", count);
+//			break;
+//		}
+//	}
+//}
+//
+//int main()
+//{
+//	int input = 0;
+//	srand((unsigned int)time(NULL)); //随机数生成器，设置一次即可
+//	do 
+//	{
+//		menu(); //游戏界面s
+//		printf("请选择：");
+//		scanf("%d", &input);
+//
+//		switch (input)
+//		{
+//		case 1:
+//			game(); //游戏
+//			break;
+//		case 0:
+//			printf("退出游戏\n");
+//			break;
+//		default:
+//			printf("选择错误，请重新输入\n");
+//			break;
+//		}
+//	} while (input);
+//	return 0;
+//}
 
-void game()
-{
-	//生成随机数
-	int ret = (rand() % 100) + 1; //用于生成随机数的函数，使用需要包含头文件<stdlib.h>
-	//rand()函数的返回值是一个随机整数，范围是0 ~ RAND-MAX（0 ~ 32767）
-	//使用该函数时，需要使用srand()函数设置随机数生成器，srand()的参数改变，随机数就会改变
-	//想要srand()函数的参数一直改变，可以使用时间戳，因为时间戳是一直在变化的
-	//获得时间戳可以使用time()函数，返回值是时间戳，使用需要包含头文件<time.h>
-	//要获得1 ~ 100的随机数，可以将rand()的返回值模100再加1
 
-	//猜数字
-	int num = 0, count = 0;
-	while (1)
-	{
-		printf("请猜数字：");
-		scanf("%d", &num);
-		count++;
-		if (num > ret)
-			printf("猜大了，再试一次吧！\n");
-		else if (num < ret)
-			printf("猜小了，不要气馁哦！\n");
-		else
-		{
-			printf("你好厉害呀！%d次就猜中了呢！\n", count);
-			break;
-		}
-	}
-}
+////goto语句
+//int main()
+//{
+//	int i = 0;
+//	printf("hehe\n");
+//again:
+//	printf("haha\n");
+//	printf("hihi\n");
+//	i++;
+//
+//	//如果不加限制条件，结果很可能会死循环
+//	if(i < 3)
+//	    goto again; //遇到这条语句，会跳转到带有"again"标签处继续执行
+//	return 0;
+//}
 
+
+////goto语句使用场景
+//int main()
+//{
+//	int ture = 1;
+//	for (int i = 0; i < 10; i++)
+//		for (int j = 0; j < 10; j++)
+//			for (int n = 0; n < 10; n++)
+//				if (ture)
+//					goto exit; //这种场景下，使用goto语句就可以跳过所以循环，要是写break则需要写三次
+//exit:
+//	return 0;
+//}
+
+
+//关机程序
+//程序运行起来之后，倒计时60s会自动关机，满足相应条件则取消关机
 int main()
 {
-	int input = 0;
-	srand((unsigned int)time(NULL)); //随机数生成器，设置一次即可
-	do 
-	{
-		menu(); //游戏界面s
-		printf("请选择：");
-		scanf("%d", &input);
+	char arr[20] = { 0 };
+	int flag = 0;
 
-		switch (input)
-		{
-		case 1:
-			game(); //游戏
-			break;
-		case 0:
-			printf("退出游戏\n");
-			break;
-		default:
-			printf("选择错误，请重新输入\n");
-			break;
-		}
-	} while (input);
+	//"shutdown -s -t 60"，这个命令是60s之后自动关机
+	//"shutdown -a"，这个命令是取消关机
+	system("shutdown -s -t 60");
+	printf("您的电脑将在1分钟之后关机\n");
+	printf("输入\"我是猪\"会为您取消关机\n");
+
+again:
+	if (flag == 0)
+	    printf("输入错误，无法取消关机程序\n");
+
+	scanf("%s", arr);
+	if (strcmp(arr, "我是猪") == 0)
+	{
+		system("shutdown -a");
+		flag = 1;
+		printf("已经取消关机\n");
+	}
+	else
+		goto again;
 	return 0;
 }
