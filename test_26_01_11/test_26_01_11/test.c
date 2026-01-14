@@ -184,3 +184,207 @@
 //}
 
 
+////函数的嵌套调用与链式访问
+//void Print()
+//{
+//	printf("Hello World!\n"); //Print()函数中调用了printf()函数，也是嵌套调用
+//}
+//
+//int Add(int x, int y)
+//{
+//	Print(); //在Add()函数内部还调用了Print()函数，属于嵌套调用
+//	return x + y;
+//}
+//
+//int main()
+//{
+//	int x = 10, y = 20;
+//	//printf()函数的参数是Add()函数的返回值
+//	//而Add()函数的参数又是Add(10, x)的返回值，属于链式访问
+//	printf("%d\n", Add(Add(10, x), y));
+//	return 0;
+//}
+
+
+////函数的声明和定义
+//int Add(int x, int y); //函数声明
+//
+//int main()
+//{
+//	//函数使用
+//	printf("%d\n", Add(10, 20)); //打印结果为：30
+//	return 0;
+//}
+//
+////函数定义
+//int Add(int x, int y)
+//{
+//	return x + y;
+//}
+
+
+////函数的递归
+////递归的两个必要条件：
+////1、必须有限制条件，当满足该条件时，递归不再继续
+////2、每次调用递归后，越来越接近该限制条件
+//int main()
+//{
+//	printf("hehe\n");
+//	main(); //函数自己调用自己，属于函数递归，但会死循环打印"hehe"，最终栈溢出
+//	return 0;
+//}
+
+
+////接收一个整型值，按照顺序打印它的每一位
+///*
+//Print(1234)
+//Print(123)  1234 / 10 = 123  1234 % 10 = 4 ———— 打印 4
+//Print(12)   123 / 10 = 12    123 % 10 = 3  ———— 打印 3 4
+//Print(1)    12 / 10 = 1      12 % 10 = 2   ———— 打印 2 3 4
+//                                           ———— 打印 1 2 3 4
+//*/
+//void Print(int n)
+//{
+//	if (n > 9) //限制条件
+//		Print(n / 10); //用于分别调用Print(123)、Print(12)、Print(1)
+//	printf("%d ", n % 10); //用于分别打印1、2、3、4
+//}
+//
+//int main()
+//{
+//	unsigned int n = 0;
+//	printf("请输入一个正整数：");
+//	scanf("%u", &n); //"%u"用于接收无符号整数
+//	Print(n);
+//	return 0;
+//}
+
+
+////不创建临时变量，求字符串长度
+////非递归实现，创建了临时变量
+//int my_strlen1(char* str)
+//{
+//	int count = 0;
+//	while (*str != '\0')
+//	{
+//		count++;
+//		str++;
+//	}
+//	return count;
+//}
+//
+////递归实现，不需要创建临时变量
+///*
+//my_strlen2("abcdef\0")
+//1 + my_strlen2("bcdef\0")
+//1 + 1 + my_strlen2("cdef\0")
+//1 + 1 + 1 + my_strlen2("def\0")
+//1 + 1 + 1 + 1 + my_strlen2("ef\0")
+//1 + 1 + 1 + 1 + 1 + my_strlen2("f\0")
+//1 + 1 + 1 + 1 + 1 + 1 + my_strlen2("\0")
+//*/
+//int my_strlen2(char* str)
+//{
+//	if (*str != '\0')
+//		return (1 + my_strlen2(str + 1));
+//	else
+//		return 0;
+//}
+//
+//int main()
+//{
+//	char str[] = "abcdef";
+//	printf("%d\n", my_strlen1(str)); //数组名是数组首元素的地址
+//	printf("%d\n", my_strlen2(str));
+//	return 0;
+//}
+
+
+////求n!
+////n! = n × (n-1)! = n × (n-1) × (n-2)! = ... = n × (n-1) × ... × 3 × 2 × 1
+//int Fac(int n)
+//{
+//	if (n > 0)
+//		return n * Fac(n - 1);
+//	else
+//		return 1; //0! = 1, 1! = 1
+//}
+//
+//int main()
+//{
+//	int n = 0;
+//	printf("请输入一个正整数：");
+//	scanf("%d", &n);
+//	printf("%d\n", Fac(n));
+//	return 0;
+//}
+
+
+////求第n个斐波那契数
+//int Fib(int n)
+//{
+//	if (n < 3)
+//		return 1;
+//	else
+//		return Fib(n - 1) + Fib(n - 2);
+//}
+//
+//int main()
+//{
+//	int n = 0;
+//	printf("请输入一个正整数：");
+//	scanf("%d", &n);
+//	printf("%d\n", Fib(n));
+//	return 0;
+//}
+
+
+////求第n个斐波那契数
+//int count = 0;
+//
+//int Fib(int n)
+//{
+//	count++;
+//	if (n < 3)
+//		return 1;
+//	else
+//		return Fib(n - 1) + Fib(n - 2);
+//}
+//
+//int main()
+//{
+//	int n = 0;
+//	printf("请输入一个正整数：");
+//	scanf("%d", &n);
+//	printf("%d\n", Fib(n));
+//	printf("%d\n", count);
+//	return 0;
+//}
+
+
+//迭代方式
+int count = 0;
+
+int Fib(int n)
+{
+	int a = 1, b = 1, c = 1; //a和b代表前两个斐波那契数，c是第三个斐波那契数
+	while (n >= 3)
+	{
+		c = a + b; //第三个斐波那契数是前两个数之和
+		a = b; //第二个斐波那契数给第一个
+		b = c; //第三个斐波那契数给第二个
+		n--;
+		count++;
+	}
+	return c;
+}
+
+int main()
+{
+	int n = 0;
+	printf("请输入一个正整数：");
+	scanf("%d", &n);
+	printf("%d\n", Fib(n));
+	printf("%d\n", count);
+	return 0;
+}
