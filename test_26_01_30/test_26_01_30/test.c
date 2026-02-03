@@ -254,3 +254,168 @@
 //}
 
 
+////二级指针
+//int main()
+//{
+//	int a = 10;
+//	int* pa = &a; //创建一级指针变量"pa"，存放整型变量"a"的地址
+//	int** ppa = &pa; //创建二级指针变量"ppa"，存放整型指针变量"pa"的地址
+//
+//	*(*ppa) = 100; //第一次解引用找到"pa"，第二次解引用找到"a"
+//	
+//	printf("%d\n", a); //打印结果为：100
+//	return 0;
+//}
+
+
+////创建指针数组
+//int main()
+//{
+//	int a = 10, b = 20, c = 30;
+//	int* pa = &a, * pb = &b, * pc = &c;
+//	int* parr[10] = { pa, pb, pc }; //数组里面存放的都是一级指针
+//	//也可以这样写，不创建一级指针：int* parr[10] = { &a, &b, &c };
+//
+//	printf("%d %d %d\n", *(parr[0]), *(parr[1]), *(parr[2])); //打印结果为：10 20 30
+//	return 0;
+//}
+
+
+////指针数组与二级指针的关系
+//int main()
+//{
+//	int a = 10, b = 20, c = 30;
+//	int* arr[10] = { &a, &b, &c };
+//	int** pa = &arr[0]; //创建二级指针，保存指针数组首元素的地址
+//
+//	printf("%d %d %d\n", **pa, **(pa + 1), **(pa + 2)); //打印结果为：10 20 30
+//	return 0;
+//}
+
+
+////一维数组模拟二维数组
+//int main()
+//{
+//	int arr1[] = { 1, 2, 3, 4, 5 };
+//	int arr2[] = { 2, 3, 4, 5, 6 };
+//	int arr3[] = { 3, 4, 5, 6, 7 };
+//	int* parr[] = { arr1, arr2, arr3 };
+//
+//	//访问数组
+//	for (int i = 0; i < 3; i++)
+//	{
+//		for (int j = 0; j < 5; j++)
+//			printf("%d ", parr[i][j]);
+//			//以下几种写法都正确
+//			//printf("%d ", (*(parr + i))[j]);
+//		    //printf("%d ", *((parr[i]) + j));
+//			//printf("%d ", *(*(parr + i) + j));
+//		printf("\n");
+//	}
+//	return 0;
+//}
+
+
+////数组下标访问与指针访问
+//int main()
+//{
+//	int arr[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+//	int* pa = arr;
+//
+//	for (int i = 0; i < 10; i++)
+//		printf("%p %p\n", &arr[i], pa + i);
+//	//打印结果相同，说明"&arr[i]"等价于"pa + i"
+//	//那么"arr[i]"就等价于"*(pa + i)"，另外pa中存放的是arr，所以也等价于"*(arr + i)"
+//	return 0;
+//}
+
+
+////结构体类型声明
+////结构体类型：struct Book
+////成员变量：name、price
+////全局变量：b1、b2
+////struct Book
+////{
+////	char name[30];
+////	int price;
+////}b1、b2;
+//
+////为结构体重命名为：Book
+//typedef struct Book
+//{
+//	char name[30];
+//	int price;
+//}Book;
+//
+//int main()
+//{
+//	struct Book b3; //可以用结构体类型创建局部变量
+//	Book b4; //也可以用重命名创建局部变量
+//	return 0;
+//}
+
+
+////结构体变量创建与初始化
+//typedef struct Book
+//{
+//	char name[30];
+//	int price;
+//}Book;
+//
+//int main()
+//{
+//	Book b1 = { "《数据结构》", 59 };
+//	Book b2 = { "《C++ Primer》", 75 };
+//
+//	printf("%s %d\n", b1.name, b1.price);
+//	printf("%s %d\n", b2.name, b2.price);
+//	return 0;
+//}
+
+
+////结构体指针变量
+//typedef struct Book
+//{
+//	char name[30];
+//	int price;
+//}Book, *PB;
+//
+//int main()
+//{
+//	Book b1 = { "《数据结构》", 59 }, b2 = { "《C++ Primer》", 75 };
+//	PB pb1 = &b1, pb2 = &b2; //定义结构体指针
+//
+//	printf("%s %d\n", pb1->name, pb1->price);
+//	printf("%s %d\n", pb2->name, pb2->price);
+//	return 0;
+//}
+
+
+//结构体传参
+struct S
+{
+	int arr[10];
+	int n;
+};
+
+void Print1(struct S ss)
+{
+	for (int i = 0; i < 10; i++)
+		printf("%d ", ss.arr[i]);
+	printf("\n%d\n", ss.n);
+}
+
+void Print2(struct S* ps)
+{
+	for (int i = 0; i < 10; i++)
+		printf("%d ", ps->arr[i]);
+	printf("\n%d\n", ps->n);
+}
+
+int main()
+{
+	struct S s = { {1, 2, 3}, 100 };
+	Print1(s);
+	Print2(&s);
+	return 0;
+}
