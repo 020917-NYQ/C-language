@@ -1,4 +1,6 @@
-﻿#include <stdio.h>
+﻿#define _CRT_SECURE_NO_WARNINGS 1
+#include <stdio.h>
+#include <math.h>
 ////字符指针
 //int main()
 //{
@@ -187,6 +189,195 @@
 //	int (*parr2)[10]; //parr2与"*"结合，本质是指针，指向一个能存放10个整型指针的数组的指针
 //	int(*parr3[10])[5]; //parr3与"[]"结合，本质是数组，含有10个元素，数组元素类型是"int(*)[5]"
 //	//所以parr3是一个存放10个数组指针的数组，每个数组指针指向一个能够存放5个整型变量的数组
+//	return 0;
+//}
+
+
+////一维数组传参
+//void test1(int arr[]) {} //正确写法
+//void test2(int arr[10]) {} //正确写法
+//void test3(int* arr) {} //正确写法，数组名是首元素地址，可以用指针接收
+//void test4(int* arr[20]) {} //正确写法
+//void test5(int** arr) {} //正确写法，传参的数组是int*类型，可以用二级指针接收
+//
+//int main()
+//{
+//	int arr1[10] = { 0 };
+//	int* arr2[20] = { 0 };
+//	test1(arr1);
+//	test2(arr1);
+//	test3(arr1);
+//	test4(arr2);
+//	test5(arr2);
+//	return 0;
+//}
+
+
+////二维数组传参
+//void test(int arr[3][5]) {} //正确写法
+//void test(int arr[][]) {} //错误写法，行可以省略，列不能省略
+//void test(int arr[][5]) {} //正确写法
+//void test(int* arr) {} //错误写法，二维数组首元素是第一行的地址，类型不匹配
+//void test(int* arr[5]) {} //错误写法，使用指针数组接收，类型不匹配
+//void test(int (*arr)[5]) {} //正确写法，使用数组指针接收，该指针指向了含有5个元素的数组
+//void test(int** arr) {} //错误写法，实参不是一级指针的地址，类型不匹配
+//
+//int main()
+//{
+//	int arr[3][5] = { 0 };
+//	test(arr);
+//	return 0;
+//}
+
+
+////函数的地址
+//int Add(int x, int y)
+//{
+//	return x + y;
+//}
+//
+//int main()
+//{
+//	printf("%p\n", &Add); //打印结果为：00007FF6170613C0
+//	printf("%p\n", Add); //打印结果为：00007FF6170613C0
+//	//"函数名"和"&函数名"得到的都是函数的地址
+//	return 0;
+//}
+
+
+////函数指针
+//int Add(int x, int y)
+//{
+//	return x + y;
+//}
+//
+//int main()
+//{
+//	int (*pf)(int, int) = Add; //用函数指针"pf"接收函数的地址
+//	//"pf"与"*"结合，说明是指针，该指针的类型是"int (*)(int, int)"
+//	//第一个int说明Add()函数返回值是int类型，后两个说明函数参数是int类型
+//
+//	int ret = (*pf)(3, 5); //通过函数指针调用了Add()函数
+//	printf("%d\n", ret); //打印结果为：8
+//
+//	//Add就是pf，所以可以用pf调用函数
+//	printf("%d\n", pf(10, 20)); //打印结果为：30
+//	return 0;
+//}
+
+
+////函数指针练习
+//char* test(int c, float* b) {}
+//
+//int main()
+//{
+//	//对于上面的函数test，定义的函数指针如下
+//	char* (*pf)(int, float*) = test;
+//	return 0;
+//}
+
+
+////函数指针使用场景
+//typedef void(*pf_t)(int); //将函数指针类型"void(*)(int)"重命名为"pf_t"
+//
+//int main()
+//{
+//	//分析下面代码的含义
+//	(*(void(*)())0)();
+//	//"(void(*)())0"是将"0"强转为函数指针类型，函数返回值为void，无参数
+//	//"*(void(*)())0"是将函数指针解引用，拿到内存块编号为0里面的代码
+//	//"(*(void(*)())0)()"是拿到这个代码之后，调用这块代码
+//	//因此这个语句的含义是：
+//	//内层中编号为0的内存块里面存储了一个可执行代码，通过"(*(void(*)())0)();"来调用这个可执行代码
+//	
+//	
+//	//分析下面代码的含义
+//	void (*signal(int, void(*)(int)))(int);
+//	//"signal"是一个函数，两个参数类型分别是int和void(*)(int)
+//	//该函数的返回值是函数指针，类型是void(*)(int)
+//
+//	//可以使用typedef关键字将第二个代码简化
+//	pf_t signal(int, pf_t);
+//	return 0;
+//}
+
+
+////函数指针数组
+//void test1() {}
+//void test2() {}
+//void test3() {}
+//void test4() {}
+//
+//int main()
+//{
+//	//函数指针数组的每个元素是一个函数指针
+//	void (*pf_arr[4])() = { &test1, &test2, &test3, &test4 };
+//	return 0;
+//}
+
+
+////函数指针数组的使用
+//void menu()
+//{
+//	printf("*****************************************\n");
+//	printf("**************** 计算器! ****************\n");
+//	printf("***** 1. 加法    2. 减法    3. 乘法 *****\n");
+//	printf("*****************************************\n");
+//	printf("***** 4. 除法    5. 取负    6. 取正 *****\n");
+//	printf("*****************************************\n");
+//	printf("***** 7. 开方    8. 平方    0. 退出 *****\n");
+//	printf("*****************************************\n");
+//}
+//
+//float ADD(float x, float y) { return x + y; }
+//float SUM(float x, float y) { return x - y; }
+//float MUL(float x, float y) { return x * y; }
+//float DIV(float x, float y) { return x / y; }
+//float NEG(float x) { return -x; }
+//float ABS(float x) { return x > 0 ? x : -x; }
+//float SQRT(float x) { return (float)sqrt(x); }
+//float SQ(float x) { return x * x; }
+//
+//int main()
+//{
+//	int input = 0;
+//	float x = 0, y = 0;
+//	char ch[7] = { ' ', '+', '-', '*', '/', '-', '+'};
+//	do
+//	{
+//		menu();
+//		printf("请选择：");
+//		scanf("%d", &input);
+//		if (input >= 1 && input <= 4 && input % 1 == 0)
+//		{
+//			float (*pf_arr1[5])(float, float) = { NULL, &ADD, &SUM, &MUL, &DIV };
+//
+//			printf("请输入两个操作数：");
+//			scanf("%f %f", &x, &y);
+//			printf("%f %c %f = %f\n", x, ch[input], y, (*(pf_arr1[input]))(x, y));
+//		}
+//		else if (input >= 5 && input <= 8 && input % 1 == 0)
+//		{
+//			float (*pf_arr2[5])(float) = { NULL, &NEG, &ABS, &SQRT, &SQ };
+//
+//			printf("请输入一个操作数：");
+//			scanf("%f", &x);
+//
+//			if (input == 7)
+//				printf("√%f = %f\n", x, (*(pf_arr2[input - 4]))(x));
+//			else if(input == 8)
+//				printf("%f * %f = %f\n", x, x, (*(pf_arr2[input - 4]))(x));
+//			else
+//				printf("%c%f = %f\n", ch[input], x, (*(pf_arr2[input - 4]))(x));
+//		}
+//		else if (input == 0)
+//		{
+//			printf("退出计算器\n");
+//			break;
+//		}
+//		else
+//			printf("选择错误，请重新选择\n");
+//	} while (input);
 //	return 0;
 //}
 
