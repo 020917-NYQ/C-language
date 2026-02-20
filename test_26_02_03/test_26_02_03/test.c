@@ -559,98 +559,390 @@
 //}
 
 
-//使用冒泡排序模拟实现qsort()函数
-void Swap(char* buf1, char* buf2, size_t size)
-{
-	//这里面没办法一起交换，可以一个字节一个字节的交换
-	for (size_t i = 0; i < size; i++)
-	{
-		char tmp = *buf1;
-		*buf1 = *buf2;
-		*buf2 = tmp;
-		buf1++, buf2++;
-	}
-}
+////使用冒泡排序模拟实现qsort()函数
+//void Swap(char* buf1, char* buf2, size_t size)
+//{
+//	//这里面没办法一起交换，可以一个字节一个字节的交换
+//	for (size_t i = 0; i < size; i++)
+//	{
+//		char tmp = *buf1;
+//		*buf1 = *buf2;
+//		*buf2 = tmp;
+//		buf1++, buf2++;
+//	}
+//}
+//
+//int compar_int(const void* p1, const void* p2)
+//{
+//	return *((int*)p1) - *((int*)p2);
+//}
+//
+//void my_qsort(
+//	void* base, //执行待比较数组的首元素
+//	size_t num, //数组中元素个数
+//	size_t size, //元素大小，单位是字节
+//	int(*cmp)(const void* p1, const void* p2)) //函数指针执行的函数返回值类型是int
+//{
+//	//冒泡排序过程
+//	for (size_t i = 0, flag = 0; i < num; i++)
+//	{
+//		for (size_t j = 0; j < num - 1 - i; j++)
+//		{
+//			//假设排列升序
+//			//char*指针一次跳过一个字节，这样base加上j × size(宽度)，就是跳过了多少字节数
+//			if (cmp((char*)base + j * size, (char*)base + (j + 1) * size) > 0)
+//			{
+//				//交换，这里还传入了宽度参数，这样就知道交换多少字节
+//				Swap((char*)base + j * size, (char*)base + (j + 1) * size, size);
+//				flag = 1;
+//			}
+//		}
+//		if (flag == 0)
+//			break;
+//	}
+//}
+//
+//void sort_int()
+//{
+//	int arr[] = { 4, 2, 7, 9, 0, 3, 1, 6, 8, 5 };
+//	int sz = sizeof(arr) / sizeof(arr[0]);
+//	my_qsort(arr, sz, sizeof(arr[0]), compar_int);
+//
+//	printf("整数按照升序排序：");
+//	for (int i = 0; i < sz; i++)
+//		printf("%d ", arr[i]);
+//	printf("\n");
+//}
+//
+//struct Stu
+//{
+//	char name[20];
+//	int age;
+//};
+//
+//int compar_struct_age(const void* p1, const void* p2)
+//{
+//	return ((struct Stu*)p1)->age - ((struct Stu*)p2)->age;
+//}
+//
+//int compar_struct_name(const void* p1, const void* p2)
+//{
+//	return strcmp(((struct Stu*)p1)->name, ((struct Stu*)p2)->name);
+//}
+//
+//void sort_struct()
+//{
+//	struct Stu s[] = { {"张三", 20}, {"李四", 19}, {"王五", 21} };
+//	int sz = sizeof(s) / sizeof(s[0]);
+//
+//	my_qsort(s, sz, sizeof(s[0]), compar_struct_age); //按照年龄比较
+//	printf("年龄按照升序排序：");
+//	for (int i = 0; i < sz; i++)
+//		printf("%s, %d  ", (s[i]).name, (s[i]).age);
+//	printf("\n");
+//
+//	my_qsort(s, sz, sizeof(s[0]), compar_struct_name); //按照姓名比较
+//	printf("名字按照升序排序：");
+//	for (int i = 0; i < sz; i++)
+//		printf("%s, %d  ", (s[i]).name, (s[i]).age);
+//	printf("\n");
+//}
+//
+//int main()
+//{
+//	sort_int(); //用my_qsort()函数排序整形数组
+//	sort_struct(); //用my_qsort()函数排序结构体
+//	return 0;
+//}
 
-int compar_int(const void* p1, const void* p2)
-{
-	return *((int*)p1) - *((int*)p2);
-}
 
-void my_qsort(
-	void* base, //执行待比较数组的首元素
-	size_t num, //数组中元素个数
-	size_t size, //元素大小，单位是字节
-	int(*cmp)(const void* p1, const void* p2)) //函数指针执行的函数返回值类型是int
-{
-	//冒泡排序过程
-	for (size_t i = 0, flag = 0; i < num; i++)
-	{
-		for (size_t j = 0; j < num - 1 - i; j++)
-		{
-			//假设排列升序
-			//char*指针一次跳过一个字节，这样base加上j × size(宽度)，就是跳过了多少字节数
-			if (cmp((char*)base + j * size, (char*)base + (j + 1) * size) > 0)
-			{
-				//交换，这里还传入了宽度参数，这样就知道交换多少字节
-				Swap((char*)base + j * size, (char*)base + (j + 1) * size, size);
-				flag = 1;
-			}
-		}
-		if (flag == 0)
-			break;
-	}
-}
+////下面程序运行结果是什么
+//int main()
+//{
+//	int a[] = { 1, 2, 3, 4 };
+//
+//	printf("%zu\n", sizeof(a));
+//	//数组a中存放4个元素，每个元素是int类型，所以sizeof(a) = 4 × 4 = 16（数组总大小）
+//
+//	printf("%zu\n", sizeof(a + 0));
+//	//sizeof(a + 0)不是数组名单独放在"sizeof"内部，a是数组名，代表数组首元素地址
+//	//a + 0是该地址向后跳过0个字节，所以sizeof(a + 0) = 4 or 8（32位 or 64位）
+//
+//	printf("%zu\n", sizeof(*a));
+//	//a是数组首元素地址，地址解引用拿到数组首元素，所以sizeof(*a) = 4（首元素大小）
+//
+//	printf("%zu\n", sizeof(a + 1));
+//	//a + 1是首元素地址向后跳过4个字节（1个int是占4个字节），a + 1是第二个元素的地址
+//	//sizeof(a + 1) = 4 or 8（32位 or 64位）
+//	
+//	printf("%zu\n", sizeof(a[1]));
+//	//a[1]是拿到数组中的第二个元素，所以sizeof(a[1]) = 4（第二个元素大小）
+//
+//	printf("%zu\n", sizeof(&a));
+//	//&a是整个数组取地址，拿到的是整个数组的地址，地址大小就是4或8个字节
+//	//因此sizeof(&a) = 4 or 8（32位 or 64位）
+//	//想要存储这样的地址，可以用数组指针存储，即：int (*pa)[4] = &a;
+//
+//	printf("%zu\n", sizeof(*&a));
+//	//&a是整个数组的地址，再解引用得到整个数组，因此相当于sizeof(a) = 16（数组总大小）
+//
+//	printf("%zu\n", sizeof(&a + 1));
+//	//&a是整个数组的地址，&a + 1是跳过了整个数组，也就是跳过16个字节，但本质还是地址
+//	//所以sizeof(&a + 1) = 4 or 8（32位 or 64位）
+//
+//	printf("%zu\n", sizeof(&a[0]));
+//	//&a[0]其中，a先与"[]"结合，再取地址，得到的是数组首元素的地址
+//	//所以sizeof(&a[0]) = 4 or 8（32位 or 64位）
+//
+//	printf("%zu\n", sizeof(&a[0] + 1));
+//	//&a[0] + 1是拿到数组首元素地址再加1，得到数组第二个元素的地址
+//	//所以sizeof(&a[0]) = 4 or 8（32位 or 64位）
+//	return 0;
+//}
 
-void sort_int()
-{
-	int arr[] = { 4, 2, 7, 9, 0, 3, 1, 6, 8, 5 };
-	int sz = sizeof(arr) / sizeof(arr[0]);
-	my_qsort(arr, sz, sizeof(arr[0]), compar_int);
 
-	printf("整数按照升序排序：");
-	for (int i = 0; i < sz; i++)
-		printf("%d ", arr[i]);
-	printf("\n");
-}
+////下面程序运行结果是什么
+//int main()
+//{
+//	char arr[] = { 'a', 'b', 'c', 'd', 'e', 'f' };
+//
+//	printf("%zu\n", sizeof(arr));
+//	//数组arr中只有六个元素，没有"\0"，另外"sizeof"计算的是内存空间的大小
+//	//不关注内存中存放的是什么，因此sizeof(arr) = 6（数组总大小）
+//
+//	printf("%zu\n", sizeof(arr + 0));
+//	//arr + 0是数组首元素地址跳过0个字节，因此sizeof(arr + 0) = 4 or 8（32位 or 64位）
+//
+//	printf("%zu\n", sizeof(*arr));
+//	//*arr是拿到数组首元素地址再解引用，得到数组首元素，因为数组是"char"类型，占1个字节
+//	//所以sizeof(*arr) = 1（首元素大小）
+//
+//	printf("%zu\n", sizeof(arr[1]));
+//	//arr[1]拿到数组第二个元素，因此sizeof(arr[1) = 1（第二个元素大小）
+//
+//	printf("%zu\n", sizeof(&arr));
+//	//&arr拿到整个数组的地址，因此sizeof(&arr) = 4 or 8（32位 or 64位）
+//
+//	printf("%zu\n", sizeof(&arr + 1));
+//	//&arr + 1是跳过整个数组，因此sizeof(&arr) = 4 or 8（32位 or 64位）
+//
+//	printf("%zu\n", sizeof(&arr[0] + 1));
+//	//&arr[0]是拿到数组首元素地址，再加1跳过1个字节，但本质还是地址
+//	//因此sizeof(&arr) = 4 or 8（32位 or 64位）
+//	return 0;
+//}
 
-struct Stu
-{
-	char name[20];
-	int age;
-};
 
-int compar_struct_age(const void* p1, const void* p2)
-{
-	return ((struct Stu*)p1)->age - ((struct Stu*)p2)->age;
-}
+////下面程序运行结果是什么
+//int main()
+//{
+//	char arr[] = { 'a', 'b', 'c', 'd', 'e', 'f' };
+//
+//	printf("%d\n", strlen(arr));
+//	//由于数组中没有存放"\0"，而strlen()函数计算字符串大小时，需要遇到"\0"才停止计算
+//	//因此只能继续向后访问内存，找到"\0"才停止，strlen(arr) = 大于6的随机值
+//
+//	printf("%d\n", strlen(arr + 0));
+//	//arr + 0依旧是arr，strlen(arr + 0) = strlen(arr) = 大于6的随机值
+//
+//	//printf("%d\n", strlen(*arr));
+//	//*arr是对数组首元素地址解引用，拿到数组首元素，strlen()函数参数表示从哪个地址开始计算
+//	//把*arr传给strlen()，其实就是把'a'传给strlen()，当strlen()拿到这个参数时，会当成地址计算
+//	//'a'的ASCII码值是97，转成十六进制是61，因此这个地址就是0x00000000 00000061
+//	//但是这个地址不属于数组arr，造成了非法访问，这句代码会导致程序崩溃
+//
+//	//printf("%d\n", strlen(arr[1]));
+//	//arr[1]是拿到'b'，那这个当成地址访问，同样非法访问，导致程序崩溃
+//
+//	printf("%d\n", strlen(&arr));
+//	//&arr拿到的是数组的地址，本质还是数组首元素的地址，但数组中没有"\0"
+//	//因此strlen(&arr) = strlen(arr + 0) = strlen(arr) = 大于6的随机值
+//
+//	printf("%d\n", strlen(&arr + 1));
+//	//&arr + 1跳过整个数组，指向数组最后一个的下一个位置
+//	//因此strlen(&arr + 1) = 随机值（并且这个数值比上面的随机值小6）
+//
+//	printf("%d\n", strlen(&arr[0] + 1));
+//	//&arr[0] + 1指向了数组中第二个元素，从'b'开始向后计算
+//	//因此strlen(&arr[0] + 1) = 大于5的随机值（这个数值比上面的随机值小1）
+//	return 0;
+//}
 
-int compar_struct_name(const void* p1, const void* p2)
-{
-	return strcmp(((struct Stu*)p1)->name, ((struct Stu*)p2)->name);
-}
 
-void sort_struct()
-{
-	struct Stu s[] = { {"张三", 20}, {"李四", 19}, {"王五", 21} };
-	int sz = sizeof(s) / sizeof(s[0]);
+////下面程序运行结果是什么
+//int main()
+//{
+//	char arr[] = "abcdef"; //这样创建数组，结尾会隐含一个"\0"
+//
+//	printf("%zu\n", sizeof(arr));
+//	//sizeof(arr)拿到整个数组，数组中有看得见的元素'abcdef'，还有隐藏的一个'\0'
+//	//因此sizeof(arr) = 7（数组总大小）
+//
+//	printf("%zu\n", sizeof(arr + 0));
+//	//arr + 0表示拿到数组首元素的地址，因此sizeof(arr + 0) = 4 or 8（32位 or 64位）
+//
+//	printf("%zu\n", sizeof(*arr));
+//	//*arr对数组的地址解引用，拿到数组首元素，因此sizeof(*arr) = 1（数组首元素大小）
+//
+//	printf("%zu\n", sizeof(arr[1]));
+//	//arr[1]拿到数组首元素，因此sizeof(arr[1]) = 1（数组首元素大小）
+//
+//	printf("%zu\n", sizeof(&arr));
+//	//&arr拿到整个数组的地址，因此sizeof(&arr) = 4 or 8（32位 or 64位）
+//
+//	printf("%zu\n", sizeof(&arr + 1));
+//	//&arr是跳过整个数组，因此sizeof(&arr + 1) = 4 or 8（32位 or 64位）
+//
+//	printf("%zu\n", sizeof(&arr[0] + 1));
+//	//&arr[0] + 1是数组第二个元素的地址，sizeof(&arr[0] + 1) = 4 or 8（32位 or 64位）
+//	return 0;
+//}
 
-	my_qsort(s, sz, sizeof(s[0]), compar_struct_age); //按照年龄比较
-	printf("年龄按照升序排序：");
-	for (int i = 0; i < sz; i++)
-		printf("%s, %d  ", (s[i]).name, (s[i]).age);
-	printf("\n");
 
-	my_qsort(s, sz, sizeof(s[0]), compar_struct_name); //按照姓名比较
-	printf("名字按照升序排序：");
-	for (int i = 0; i < sz; i++)
-		printf("%s, %d  ", (s[i]).name, (s[i]).age);
-	printf("\n");
-}
+////下面程序运行结果是什么
+//int main()
+//{
+//	char arr[] = "abcdef"; //数组结尾有一个隐藏的"\0"
+//
+//	printf("%d\n", strlen(arr));
+//	//strlen(arr) = 6（计算到"\0"为止）
+//
+//	printf("%d\n", strlen(arr + 0));
+//	//strlen(arr + 0) = strlen(arr) = 6（计算到"\0"为止）
+//
+//	//printf("%d\n", strlen(*arr));
+//	//*arr拿到字符'a'，造成非法访问
+//
+//	//printf("%d\n", strlen(arr[1]));
+//	//arr[1]拿到字符'b'，造成非法访问
+//
+//	printf("%d\n", strlen(&arr));
+//	//&arr拿到整个数组的地址，也就是数组首元素地址
+//	//因此strlen(&arr) = 6（计算到"\0"为止）
+//
+//	printf("%d\n", strlen(&arr + 1));
+//	//&arr + 1跳过整个数组，这时候已经把"\0"跳过去了
+//	//因此strlen(&arr + 1) = 随机值
+//
+//	printf("%d\n", strlen(&arr[0] + 1));
+//	//&arr[0] + 1是第二个元素的地址，因此strlen(&arr[0] + 1) = 5（计算到"\0"为止）
+//	return 0;
+//}
 
+
+////下面程序运行结果是什么
+//int main()
+//{
+//	char* p = "abcdef";
+//
+//	printf("%zu\n", sizeof(p));
+//	//p是指针变量，指向了字符串常量"abcdef"首字符的地址
+//	//所以sizeof(p) = 4 or 8（32位 or 64位）
+//
+//	printf("%zu\n", sizeof(p + 1));
+//	//p的类型是"char*"，p + 1跳过1个字节，因此是'b'的地址
+//	//所以sizeof(p + 1) = 4 or 8（32位 or 64位）
+//
+//	printf("%zu\n", sizeof(*p));
+//	//*p是对p解引用，访问一个字符，所以sizeof(*p) = 1（首字符大小）
+//
+//	printf("%zu\n", sizeof(p[0]));
+//	//p[0]是首字符，所以sizeof(p[0]) = 1（首字符大小）
+//
+//	printf("%zu\n", sizeof(&p));
+//	//&p拿到变量p的地址，&p是二级指针，因此sizeof(&p) = 4 or 8（32位 or 64位）
+//
+//	printf("%zu\n", sizeof(&p + 1));
+//	//&p + 1是跳过变量p，但仍是地址，因此sizeof(&p + 1) = 4 or 8（32位 or 64位）
+//
+//	printf("%zu\n", sizeof(&p[0] + 1));
+//	//&p[0] + 1是拿到'b'的地址，因此sizeof(&p[0] + 1) = 4 or 8（32位 or 64位）
+//	return 0;
+//}
+
+
+////下面程序运行结果是什么
+//int main()
+//{
+//	char* p = "abcdef";
+//
+//	printf("%d\n", strlen(p));
+//	//p是常量字符串"abcdef"，所以strlen(p) = 6（字符串长度）
+//
+//	printf("%d\n", strlen(p + 1));
+//	//p + 1是指向了'b'，从此处开始计算长度，所以strlen(p + 1) = 5
+//
+//	//printf("%d\n", strlen(*p));
+//	//*p是拿到'a'，把'a'当成地址，形成非法访问
+//
+//	//printf("%d\n", strlen(p[0]));
+//	//p[0]是拿到'a'，把'a'当成地址，形成非法访问
+//
+//	printf("%d\n", strlen(&p));
+//	//&p是拿到p的地址，变量p的地址和内容未知，所以strlen(&p) = 随机值
+//
+//	printf("%d\n", strlen(&p + 1));
+//	//&p + 1是跳过p的地址，所以strlen(&p) = 随机值
+//
+//	printf("%d\n", strlen(&p[0] + 1));
+//	//&p[0] + 1是'b'的地址，所以strlen(&p[0] + 1) = 5
+//	return 0;
+//}
+
+
+////下面程序运行结果是什么
+//int main()
+//{
+//	int a[3][4] = { 0 };
+//
+//	printf("%zu\n", sizeof(a));
+//	//数组名单独放在"sizeof"内部，计算整个数组的大小
+//	//因此sizeof(a) = 12 × 4 = 48（整个数组的大小）
+//
+//	printf("%zu\n", sizeof(a[0][0]));
+//	//a[0][0]是二维数组首元素，因此sizeof(a[0][0]) = 4（首元素大小）
+//
+//	printf("%zu\n", sizeof(a[0]));
+//	//a[0]是二维数组的第一行数组名，相当于数组名单独放在"sizeof"内部
+//	//因此sizeof(a[0]) = 4 × 4 = 16（3行4列，每行4个元素，第一行大小）
+//
+//	printf("%zu\n", sizeof(a[0] + 1));
+//	//这里不是数组名单独放在"sizeof"内部，所以a[0]表示第一行首元素地址
+//	//a[0] + 1是跳过一个元素，拿到了数组的第一行的第二个元素地址
+//	//既然是地址，所以sizeof(a[0] + 1) = 4 or 8（32位 or 64位）
+//
+//	printf("%zu\n", sizeof(*(a[0] + 1)));
+//	//a[0] + 1是第一行第二个元素的地址，再解引用拿到第一行第二个元素
+//	//所以sizeof(*(a[0] + 1)) = 4（第一行第二个元素大小）
+//
+//	printf("%zu\n", sizeof(a + 1));
+//	//这里不是数组名单独放在"sizeof"内部，所以a表示数组首元素地址
+//	//二维数组的首元素是第一行，所以a是第一行地址，即一维数组指针，类型是int(*)[4]
+//	//a + 1跳过了一行，是第二行的地址，因此sizeof(a + 1) = 4 or 8（32位 or 64位）
+//
+//	printf("%zu\n", sizeof(*(a + 1)));
+//	//a + 1是第二行的地址，解引用拿到了第二行，因此sizeof(*(a + 1)) = 16（第二行大小）
+//
+//	printf("%zu\n", sizeof(&a[0] + 1));
+//	//a[0]是第一行数组名，取地址拿到第一行的地址，加1跳过一行，拿到第二行的地址
+//	//所以sizeof(&a[0] + 1) = 4 or 8（32位 or 64位）
+//
+//	printf("%zu\n", sizeof(*(&a[0] + 1)));
+//	//&a[0] + 1是第二行地址，解引用拿到第二行，所以sizeof(*(&a[0] + 1)) = 16（第二行大小）
+//
+//	printf("%zu\n", sizeof(*a));
+//	//a是二维数组首元素地址，解引用拿到了第一行，所以sizeof(*a) = 16（第一行大小）
+//
+//	printf("%zu\n", sizeof(a[3]));
+//	//a[3]是拿到了第四行，因为sizeof内部的代码不会真正执行，所以此处不会越界
+//	//因此sizeof(a[3]) = 16（第四行大小）
+//	return 0;
+//}
+
+
+//下面程序运行结果是什么
 int main()
 {
-	sort_int(); //用my_qsort()函数排序整形数组
-	sort_struct(); //用my_qsort()函数排序结构体
+	
 	return 0;
 }
